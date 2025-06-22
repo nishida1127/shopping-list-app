@@ -2,7 +2,7 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8" />
-  <title>買い物リスト（並び替え対応）</title>
+  <title>買い物リスト（整列表示）</title>
   <link rel="stylesheet" href="style.css" />
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
@@ -27,19 +27,17 @@
       newItemRef.set({
         text: value,
         checked: false,
-        order: Date.now() // 追加時の時間で仮の順番に
+        order: Date.now()
       });
       input.value = "";
     }
 
-    // Enterキーでも追加
     document.getElementById("itemInput").addEventListener("keypress", function (e) {
       if (e.key === "Enter") {
         addItem();
       }
     });
 
-    // 並び順で表示
     listRef.orderByChild("order").on("value", (snapshot) => {
       const ul = document.getElementById("list");
       ul.innerHTML = "";
@@ -53,6 +51,7 @@
 
         const span = document.createElement("span");
         span.textContent = data.text;
+        span.className = "item-content"; // ←★ここが追加されたポイント
         if (data.checked) span.classList.add("checked");
 
         const doneBtn = document.createElement("button");
@@ -72,7 +71,6 @@
       });
     });
 
-    // 並び替え処理
     new Sortable(document.getElementById("list"), {
       animation: 150,
       onEnd: function (evt) {

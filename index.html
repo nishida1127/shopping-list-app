@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>買い物リスト</title>
+  <title>family 買い物リスト</title>
   <link rel="stylesheet" href="style.css" />
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
@@ -61,15 +61,16 @@
         const buttonGroup = document.createElement("div");
         buttonGroup.className = "button-group";
 
-        // ✅ 正しく表示：false→「未購入」、true→「購入済」
         const doneBtn = document.createElement("button");
         doneBtn.textContent = data.checked ? "購入済" : "未購入";
+        doneBtn.className = data.checked ? "done purchased" : "done not-purchased";
         doneBtn.onclick = () => {
           listRef.child(key).update({ checked: !data.checked });
         };
 
         const deleteBtn = document.createElement("button");
         deleteBtn.textContent = "削除";
+        deleteBtn.className = "delete";
         deleteBtn.onclick = () => listRef.child(key).remove();
 
         buttonGroup.appendChild(doneBtn);
@@ -95,6 +96,7 @@
   </script>
 </body>
 </html>
+
 
 
 

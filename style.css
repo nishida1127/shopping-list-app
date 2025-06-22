@@ -2,48 +2,77 @@ body {
   font-family: sans-serif;
   padding: 20px;
   background-color: #fafafa;
+  margin: 0;
+}
+
+h1 {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.input-group {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
 }
 
 input[type="text"] {
-  padding: 6px;
-  width: 240px;
+  flex: 1;
+  padding: 8px;
   font-size: 16px;
 }
 
 button {
-  margin-left: 6px;
-  padding: 4px 10px;
+  padding: 8px 12px;
   font-size: 14px;
   white-space: nowrap;
 }
 
 ul {
   padding: 0;
+  margin: 0;
 }
 
-li {
+.list-item {
   list-style: none;
-  margin: 10px 0;
-  padding: 10px;
-  background: #fff;
-  border-radius: 8px;
   display: flex;
-  align-items: center;
   justify-content: space-between;
-  box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+  align-items: center;
+  background: #fff;
+  margin-bottom: 10px;
+  padding: 12px;
+  border-radius: 8px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+  flex-wrap: wrap;
 }
 
-.item-content {
-  flex-grow: 1;
+.item-text {
   font-size: 16px;
+  flex: 1;
   margin-right: 10px;
   word-break: break-word;
+}
+
+.button-group {
+  display: flex;
+  gap: 6px;
 }
 
 .checked {
   text-decoration: line-through;
   color: gray;
 }
+
+@media (max-width: 480px) {
+  .list-item {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .button-group {
+    margin-top: 10px;
+  }
+}
+
 
 
 

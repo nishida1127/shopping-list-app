@@ -1,105 +1,122 @@
-<script>
-  const db = firebase.database();
-  const listRef = db.ref("items");
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>family 買い物リスト</title>
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+  <script src="firebase-config.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
+</head>
+<body>
+  <h1>🛒 family 買い物リスト</h1>
+  <div class="input-group">
+    <input id="itemInput" type="text" placeholder="商品名を入力" />
+    <button onclick="addItem()">追加</button>
+  </div>
+  <ul id="list"></ul>
 
-  function addItem() {
-    const input = document.getElementById("itemInput");
-    const value = input.value.trim();
-    if (!value) return;
-    const newItemRef = listRef.push();
-    newItemRef.set({
-      text: value,
-      checked: false,
-      order: Date.now()
-    });
-    input.value = "";
-  }
+  <script>
+    const db = firebase.database();
+    const listRef = db.ref("items");
 
-  document.getElementById("itemInput").addEventListener("keypress", function (e) {
-    if (e.key === "Enter") {
-      addItem();
-    }
-  });
-
-  const listElement = document.getElementById("list");
-
-  // ✅ Sortable 初期設定（視覚効果付き）
-  const sortable = new Sortable(listElement, {
-    animation: 150,
-    disabled: true,
-    ghostClass: "sortable-ghost",
-    chosenClass: "sortable-chosen",
-    onEnd: function (evt) {
-      const items = listElement.querySelectorAll("li");
-      items.forEach((li, index) => {
-        const id = li.getAttribute("data-id");
-        listRef.child(id).update({ order: index });
+    function addItem() {
+      const input = document.getElementById("itemInput");
+      const value = input.value.trim();
+      if (!value) return;
+      const newItemRef = listRef.push();
+      newItemRef.set({
+        text: value,
+        checked: false,
+        order: Date.now()
       });
+      input.value = "";
     }
-  });
 
-  // ✅ 長押しで並び替え有効、視覚モードON
-  let longPressTimer = null;
-
-  listElement.addEventListener("touchstart", function (e) {
-    if (e.target.tagName === "BUTTON") return;
-
-    longPressTimer = setTimeout(() => {
-      sortable.option("disabled", false);
-      document.body.classList.add("drag-mode"); // 🔶 モードON
-    }, 300);
-  });
-
-  listElement.addEventListener("touchend", function () {
-    clearTimeout(longPressTimer);
-    setTimeout(() => {
-      sortable.option("disabled", true);
-      document.body.classList.remove("drag-mode"); // 🔶 モードOFF
-    }, 1000);
-  });
-
-  listRef.orderByChild("order").on("value", (snapshot) => {
-    listElement.innerHTML = "";
-
-    snapshot.forEach((childSnapshot) => {
-      const key = childSnapshot.key;
-      const data = childSnapshot.val();
-
-      const li = document.createElement("li");
-      li.setAttribute("data-id", key);
-      li.className = "list-item";
-
-      const content = document.createElement("span");
-      content.textContent = data.text;
-      content.className = "item-text";
-      if (data.checked) content.classList.add("checked");
-
-      const buttonGroup = document.createElement("div");
-      buttonGroup.className = "button-group";
-
-      const doneBtn = document.createElement("button");
-      doneBtn.textContent = data.checked ? "購入済" : "未購入";
-      doneBtn.className = data.checked ? "done purchased" : "done not-purchased";
-      doneBtn.onclick = () => {
-        listRef.child(key).update({ checked: !data.checked });
-      };
-
-      const deleteBtn = document.createElement("button");
-      deleteBtn.textContent = "削除";
-      deleteBtn.className = "delete";
-      deleteBtn.onclick = () => listRef.child(key).remove();
-
-      buttonGroup.appendChild(doneBtn);
-      buttonGroup.appendChild(deleteBtn);
-
-      li.appendChild(content);
-      li.appendChild(buttonGroup);
-      listElement.appendChild(li);
+    document.getElementById("itemInput").addEventListener("keypress", function (e) {
+      if (e.key === "Enter") {
+        addItem();
+      }
     });
-  });
-</script>
 
+    const listElement = document.getElementById("list");
 
+    // 並び替え初期設定（無効）
+    const sortable = new Sortable(listElement, {
+      animation: 150,
+      disabled: true,
+      ghostClass: "sortable-ghost",
+      chosenClass: "sortable-chosen",
+      onEnd: function (evt) {
+        const items = listElement.querySelectorAll("li");
+        items.forEach((li, index) => {
+          const id = li.getAttribute("data-id");
+          listRef.child(id).update({ order: index });
+        });
+      }
+    });
 
+    // 長押しで並び替えを有効に
+    let longPressTimer = null;
 
+    listElement.addEventListener("touchstart", function (e) {
+      if (e.target.tagName === "BUTTON") return;
 
+      longPressTimer = setTimeout(() => {
+        sortable.option("disabled", false);
+        document.body.classList.add("drag-mode");
+      }, 300);
+    });
+
+    listElement.addEventListener("touchend", function () {
+      clearTimeout(longPressTimer);
+      setTimeout(() => {
+        sortable.option("disabled", true);
+        document.body.classList.remove("drag-mode");
+      }, 1000);
+    });
+
+    listRef.orderByChild("order").on("value", (snapshot) => {
+      listElement.innerHTML = "";
+
+      snapshot.forEach((childSnapshot) => {
+        const key = childSnapshot.key;
+        const data = childSnapshot.val();
+
+        const li = document.createElement("li");
+        li.setAttribute("data-id", key);
+        li.className = "list-item";
+
+        const content = document.createElement("span");
+        content.textContent = data.text;
+        content.className = "item-text";
+        if (data.checked) content.classList.add("checked");
+
+        const buttonGroup = document.createElement("div");
+        buttonGroup.className = "button-group";
+
+        const doneBtn = document.createElement("button");
+        doneBtn.textContent = data.checked ? "購入済" : "未購入";
+        doneBtn.className = data.checked ? "done purchased" : "done not-purchased";
+        doneBtn.onclick = () => {
+          listRef.child(key).update({ checked: !data.checked });
+        };
+
+        const deleteBtn = document.createElement("button");
+        deleteBtn.textContent = "削除";
+        deleteBtn.className = "delete";
+        deleteBtn.onclick = () => listRef.child(key).remove();
+
+        buttonGroup.appendChild(doneBtn);
+        buttonGroup.appendChild(deleteBtn);
+
+        li.appendChild(content);
+        li.appendChild(buttonGroup);
+        listElement.appendChild(li);
+      });
+    });
+  </script>
+</body>
+</html>

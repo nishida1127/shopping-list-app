@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <title>買い物リスト（並び替え対応）</title>
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+  <script src="firebase-config.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
+</head>
+<body>
+  <h1>🛒 家族の買い物リスト</h1>
+  <input id="itemInput" type="text" placeholder="商品名を入力" />
+  <button onclick="addItem()">追加</button>
+  <ul id="list"></ul>
+
+  <script>
+    const db = firebase.database();
+    const listRef = db.ref("items");
+
+    function addItem() {
+      const input = document.getElementById("itemInput");
+      const value = input.value.trim();
+      if (!value) return;
+      const newItemRef = listRef.push();
+      newItemRef.set({
+        text: value,
+        checked: false,
+        order: Date.now() // 追加時の時間で仮の順番に
+      });
+      input.value = "";
+    }
+
+    // Enterキーでも追加
+    document.getElementById("itemInput").addEventListener("keypress", function (e) {
+      if (e.key === "Enter") {
+        addItem();
+      }
+    });
+
+    // 並び順で表示
+    listRef.orderByChild("order").on("value", (snapshot) => {
+      const ul = document.getElementById("list");
+      ul.innerHTML = "";
+
+      snapshot.forEach((childSnapshot) => {
+        const key = childSnapshot.key;
+        const data = childSnapshot.val();
+
+        const li = document.createElement("li");
+        li.setAttribute("data-id", key);
+
+        const span = document.createElement("span");
+        span.textContent = data.text;
+        if (data.checked) span.classList.add("checked");
+
+        const doneBtn = document.createElement("button");
+        doneBtn.textContent = data.checked ? "未購入" : "購入済み";
+        doneBtn.onclick = () => {
+          listRef.child(key).update({ checked: !data.checked });
+        };
+
+        const deleteBtn = document.createElement("button");
+        deleteBtn.textContent = "削除";
+        deleteBtn.onclick = () => listRef.child(key).remove();
+
+        li.appendChild(span);
+        li.appendChild(doneBtn);
+        li.appendChild(deleteBtn);
+        ul.appendChild(li);
+      });
+    });
+
+    // 並び替え処理
+    new Sortable(document.getElementById("list"), {
+      animation: 150,
+      onEnd: function (evt) {
+        const ul = document.getElementById("list");
+        const items = ul.querySelectorAll("li");
+        items.forEach((li, index) => {
+          const id = li.getAttribute("data-id");
+          listRef.child(id).update({ order: index });
+        });
+      }
+    });
+  </script>
+</body>
+</html>

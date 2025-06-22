@@ -11,7 +11,7 @@
   <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
 </head>
 <body>
-  <h1>🛒 family 買い物リスト</h1>
+  <h1>🛒 家族の買い物リスト</h1>
   <div class="input-group">
     <input id="itemInput" type="text" placeholder="商品名を入力" />
     <button onclick="addItem()">追加</button>
@@ -61,9 +61,9 @@
         const buttonGroup = document.createElement("div");
         buttonGroup.className = "button-group";
 
-        // ✅ 表示を逆にしました（true→未購入、false→購入済）
+        // ✅ 正しく表示：false→「未購入」、true→「購入済」
         const doneBtn = document.createElement("button");
-        doneBtn.textContent = data.checked ? "未購入" : "購入済";
+        doneBtn.textContent = data.checked ? "購入済" : "未購入";
         doneBtn.onclick = () => {
           listRef.child(key).update({ checked: !data.checked });
         };
@@ -95,6 +95,7 @@
   </script>
 </body>
 </html>
+
 
 
 

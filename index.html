@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <title>家族の買い物リスト</title>
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+  <script src="firebase-config.js"></script>
+</head>
+<body>
+  <h1>🛒 家族の買い物リスト</h1>
+  <input id="itemInput" type="text" placeholder="商品名を入力" />
+  <button onclick="addItem()">追加</button>
+  <ul id="list"></ul>
+
+  <script>
+    const db = firebase.database();
+    const listRef = db.ref("items");
+
+    function addItem() {
+      const input = document.getElementById("itemInput");
+      const value = input.value.trim();
+      if (!value) return;
+      listRef.push({ text: value, checked: false });
+      input.value = "";
+    }
+
+    listRef.on("child_added", (snapshot) => {
+      const li = document.createElement("li");
+      const data = snapshot.val();
+
+      const span = document.createElement("span");
+      span.textContent = data.text;
+      if (data.checked) span.classList.add("checked");
+      span.style.cursor = "pointer";
+      span.onclick = () => {
+        listRef.child(snapshot.key).update({ checked: !data.checked });
+      };
+
+      const btn = document.createElement("button");
+      btn.textContent = "削除";
+      btn.onclick = () => listRef.child(snapshot.key).remove();
+
+      li.appendChild(span);
+      li.appendChild(btn);
+      li.id = snapshot.key;
+      document.getElementById("list").appendChild(li);
+    });
+
+    listRef.on("child_removed", (snapshot) => {
+      const li = document.getElementById(snapshot.key);
+      if (li) li.remove();
+    });
+
+    listRef.on("child_changed", (snapshot) => {
+      const li = document.getElementById(snapshot.key);
+      if (li) {
+        const span = li.querySelector("span");
+        const data = snapshot.val();
+        span.className = data.checked ? "checked" : "";
+      }
+    });
+  </script>
+</body>
+</html>

@@ -9,6 +9,14 @@
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
   <script src="firebase-config.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
+  <style>
+    /* 👇 テキスト選択を防ぐ（重要） */
+    * {
+      -webkit-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+    }
+  </style>
 </head>
 <body>
   <h1>🛒 family 買い物リスト</h1>
@@ -41,10 +49,10 @@
       }
     });
 
-    // ✅ Sortable 初期設定（disabled: true）
+    // Sortable 初期化（無効）
     const sortable = new Sortable(document.getElementById("list"), {
       animation: 150,
-      disabled: true, // 初期状態はドラッグ不可
+      disabled: true,
       onEnd: function (evt) {
         const ul = document.getElementById("list");
         const items = ul.querySelectorAll("li");
@@ -55,21 +63,24 @@
       }
     });
 
-    // ✅ 並び替えのロングタップ対応
+    // 長押しで並び替えを有効化（300ms）
     let longPressTimer = null;
     const listElement = document.getElementById("list");
 
     listElement.addEventListener("touchstart", function (e) {
+      // ターゲットがボタンの場合は無視
+      if (e.target.tagName === "BUTTON") return;
+
       longPressTimer = setTimeout(() => {
-        sortable.option("disabled", false); // 並び替え有効
-      }, 600); // 600ms 長押し
+        sortable.option("disabled", false);
+      }, 300); // ⏱ 長押し時間を300msに
     });
 
     listElement.addEventListener("touchend", function () {
       clearTimeout(longPressTimer);
       setTimeout(() => {
-        sortable.option("disabled", true); // 並び替え無効に戻す
-      }, 1000); // 1秒後に自動的に無効に
+        sortable.option("disabled", true);
+      }, 1000);
     });
 
     listRef.orderByChild("order").on("value", (snapshot) => {
@@ -115,5 +126,6 @@
   </script>
 </body>
 </html>
+
 
 

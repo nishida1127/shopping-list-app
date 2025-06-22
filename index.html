@@ -41,6 +41,37 @@
       }
     });
 
+    // ✅ Sortable 初期設定（disabled: true）
+    const sortable = new Sortable(document.getElementById("list"), {
+      animation: 150,
+      disabled: true, // 初期状態はドラッグ不可
+      onEnd: function (evt) {
+        const ul = document.getElementById("list");
+        const items = ul.querySelectorAll("li");
+        items.forEach((li, index) => {
+          const id = li.getAttribute("data-id");
+          listRef.child(id).update({ order: index });
+        });
+      }
+    });
+
+    // ✅ 並び替えのロングタップ対応
+    let longPressTimer = null;
+    const listElement = document.getElementById("list");
+
+    listElement.addEventListener("touchstart", function (e) {
+      longPressTimer = setTimeout(() => {
+        sortable.option("disabled", false); // 並び替え有効
+      }, 600); // 600ms 長押し
+    });
+
+    listElement.addEventListener("touchend", function () {
+      clearTimeout(longPressTimer);
+      setTimeout(() => {
+        sortable.option("disabled", true); // 並び替え無効に戻す
+      }, 1000); // 1秒後に自動的に無効に
+    });
+
     listRef.orderByChild("order").on("value", (snapshot) => {
       const ul = document.getElementById("list");
       ul.innerHTML = "";
@@ -81,24 +112,8 @@
         ul.appendChild(li);
       });
     });
-
-    new Sortable(document.getElementById("list"), {
-      animation: 150,
-      onEnd: function (evt) {
-        const ul = document.getElementById("list");
-        const items = ul.querySelectorAll("li");
-        items.forEach((li, index) => {
-          const id = li.getAttribute("data-id");
-          listRef.child(id).update({ order: index });
-        });
-      }
-    });
   </script>
 </body>
 </html>
-
-
-
-
 
 

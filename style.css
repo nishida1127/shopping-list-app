@@ -1,20 +1,130 @@
-/* 並び替えモード中の視覚的変化 */
+body {
+  font-family: sans-serif;
+  padding: 20px;
+  background-color: #fafafa;
+  margin: 0;
+}
+
+h1 {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.input-group {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+input[type="text"] {
+  flex: 1;
+  padding: 8px;
+  font-size: 16px;
+}
+
+button {
+  padding: 0 12px;
+  font-size: 14px;
+  white-space: nowrap;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+button:hover {
+  opacity: 0.9;
+}
+
+.done.not-purchased {
+  background-color: #d0eaff; /* 淡い青 */
+  color: #004c8c;
+}
+
+.done.purchased {
+  background-color: #ffe4c4; /* 淡いオレンジ */
+  color: #8b4513;
+}
+
+.delete {
+  background-color: #f9dada; /* 淡い赤 */
+  color: #800000;
+}
+
+ul {
+  padding: 0;
+  margin: 0;
+}
+
+.list-item {
+  list-style: none;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #fff;
+  margin-bottom: 10px;
+  padding: 12px;
+  border-radius: 8px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+  flex-wrap: nowrap;
+}
+
+.item-text {
+  font-size: 16px;
+  flex: 1;
+  margin-right: 10px;
+  word-break: break-word;
+}
+
+.button-group {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+
+.checked {
+  text-decoration: line-through;
+  color: gray;
+}
+
+/* 👇 並び替えモード中のリストに視覚効果 */
 .drag-mode .list-item {
   background-color: #fffbe6;
   box-shadow: 0 0 8px rgba(255, 187, 0, 0.5);
 }
 
-/* 選択中のアイテム（ドラッグ開始時） */
+/* ドラッグ対象の選択中のアイテム */
 .sortable-chosen {
   opacity: 0.8;
   transform: scale(1.01);
   background-color: #fff2cc;
 }
 
-/* ドラッグ中のゴースト表示 */
+/* ゴースト表示（ドロップ先） */
 .sortable-ghost {
   opacity: 0.5;
   background-color: #e6f7ff;
   border: 2px dashed #1890ff;
 }
+
+/* スマホ対応 */
+@media (max-width: 480px) {
+  .list-item {
+    flex-wrap: nowrap;
+  }
+  .button-group {
+    margin-top: 0;
+  }
+}
+
+/* テキスト選択を防止 */
+* {
+  user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+}
+
 

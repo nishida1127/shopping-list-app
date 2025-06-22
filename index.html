@@ -11,7 +11,7 @@
   <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
 </head>
 <body>
-  <h1>🛒 family 買い物リスト</h1>
+  <h1>🛒 家族の買い物リスト</h1>
   <div class="input-group">
     <input id="itemInput" type="text" placeholder="商品名を入力" />
     <button onclick="addItem()">追加</button>
@@ -69,6 +69,31 @@
 
         const deleteBtn = document.createElement("button");
         deleteBtn.textContent = "削除";
-        deleteBtn.onc
+        deleteBtn.onclick = () => listRef.child(key).remove();
+
+        buttonGroup.appendChild(doneBtn);
+        buttonGroup.appendChild(deleteBtn);
+
+        li.appendChild(content);
+        li.appendChild(buttonGroup);
+        ul.appendChild(li);
+      });
+    });
+
+    new Sortable(document.getElementById("list"), {
+      animation: 150,
+      onEnd: function (evt) {
+        const ul = document.getElementById("list");
+        const items = ul.querySelectorAll("li");
+        items.forEach((li, index) => {
+          const id = li.getAttribute("data-id");
+          listRef.child(id).update({ order: index });
+        });
+      }
+    });
+  </script>
+</body>
+</html>
+
 
 

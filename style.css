@@ -32,14 +32,17 @@ ul {
 }
 
 .list-item {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 10px;
+  margin-bottom: 10px;
+  background-color: #fff;
+}
+
+.top-row {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 12px 10px;
-  border: 1px solid #ddd;
-  margin-bottom: 10px;
-  border-radius: 8px;
-  background-color: #fff;
   flex-wrap: nowrap;
 }
 
@@ -47,6 +50,7 @@ ul {
   flex: 1;
   font-size: 18px;
   word-break: break-word;
+  vertical-align: middle;
 }
 
 .item-text.checked {
@@ -65,7 +69,6 @@ button {
   font-size: 14px;
   border: none;
   border-radius: 5px;
-  vertical-align: middle;
   height: 36px;
   display: flex;
   align-items: center;
@@ -93,13 +96,9 @@ button {
 }
 
 @media (max-width: 480px) {
-  .list-item {
+  .top-row {
     flex-direction: row;
-    align-items: center;
-  }
-
-  .button-group {
-    flex-wrap: nowrap;
+    flex-wrap: wrap;
   }
 
   button {
@@ -107,6 +106,7 @@ button {
     padding: 6px;
   }
 }
+
 
 
 

@@ -78,6 +78,10 @@ ul {
   flex: 1;
   margin-right: 10px;
   word-break: break-word;
+
+  /* ✅ 商品名の縦位置を中央に */
+  display: flex;
+  align-items: center;
 }
 
 .button-group {
@@ -91,27 +95,27 @@ ul {
   color: gray;
 }
 
-/* ✅ 並び替え中の選択アイテムのみ強調表示 */
+/* ✅ ドラッグ中に選択された要素の見た目 */
 .highlighted-item {
   background-color: #fffbe6;
   box-shadow: 0 0 8px rgba(255, 187, 0, 0.5);
 }
 
-/* ✅ ドラッグ選択中のスタイル */
+/* ✅ ドラッグ操作中のエフェクト */
 .sortable-chosen {
   opacity: 0.8;
   transform: scale(1.01);
   background-color: #fff2cc;
 }
 
-/* ✅ ドロップ先のゴーストスタイル */
+/* ✅ ドロップ先のゴースト要素 */
 .sortable-ghost {
   opacity: 0.5;
   background-color: #e6f7ff;
   border: 2px dashed #1890ff;
 }
 
-/* ✅ スマホ対応調整 */
+/* ✅ スマホ対応 */
 @media (max-width: 480px) {
   .list-item {
     flex-direction: row;
@@ -123,11 +127,12 @@ ul {
   }
 }
 
-/* ✅ すべての要素でテキスト選択を防ぐ（特にiOS対策） */
+/* ✅ iOSなどでテキストが選択されないように */
 * {
   user-select: none;
   -webkit-user-select: none;
   -ms-user-select: none;
 }
+
 
 

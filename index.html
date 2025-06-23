@@ -7,14 +7,26 @@
   <link rel="stylesheet" href="style.css" />
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
-  <script src="firebase-config.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyCd5dXABidFlZqypvwB8ARzOuC0BjDtB0Y",
+      authDomain: "shopping-list-eef81.firebaseapp.com",
+      databaseURL: "https://shopping-list-eef81-default-rtdb.asia-southeast1.firebasedatabase.app",
+      projectId: "shopping-list-eef81",
+      storageBucket: "shopping-list-eef81.appspot.com",
+      messagingSenderId: "527901026853",
+      appId: "1:527901026853:web:8246ce69cac03f9fb6adcc",
+      measurementId: "G-G7L2VQT2N4"
+    };
+    firebase.initializeApp(firebaseConfig);
+  </script>
 </head>
 <body>
-  <h1>🛒 family 買い物リスト</h1>
+  <h1>📂 family 買い物リスト</h1>
   <div class="input-group">
     <input id="itemInput" type="text" placeholder="商品名を入力" />
-    <button onclick="addItem()">追加</button>
+    <button id="addButton">追加</button>
   </div>
   <ul id="list"></ul>
 
@@ -22,9 +34,10 @@
     const db = firebase.database();
     const listRef = db.ref("items");
     const listElement = document.getElementById("list");
+    const input = document.getElementById("itemInput");
+    const addButton = document.getElementById("addButton");
 
     function addItem() {
-      const input = document.getElementById("itemInput");
       const value = input.value.trim();
       if (!value) return;
       const newItemRef = listRef.push();
@@ -32,64 +45,48 @@
       input.value = "";
     }
 
-    document.getElementById("itemInput").addEventListener("keypress", function (e) {
+    input.addEventListener("keypress", (e) => {
       if (e.key === "Enter") addItem();
     });
+    addButton.addEventListener("click", addItem);
 
     const sortable = new Sortable(listElement, {
       animation: 150,
       disabled: true,
       ghostClass: "sortable-ghost",
       chosenClass: "sortable-chosen",
-      onChoose: function (evt) {
-        evt.item.classList.add("highlighted-item");
-      },
-      onUnchoose: function (evt) {
-        evt.item.classList.remove("highlighted-item");
-      },
-      onEnd: function () {
-        const items = listElement.querySelectorAll("li");
-        items.forEach((li, index) => {
-          const id = li.getAttribute("data-id");
+      onChoose: (evt) => evt.item.classList.add("highlighted-item"),
+      onUnchoose: (evt) => evt.item.classList.remove("highlighted-item"),
+      onEnd: () => {
+        [...listElement.children].forEach((li, index) => {
+          const id = li.dataset.id;
           listRef.child(id).update({ order: index });
         });
       }
     });
 
-    let longPressTimer = null;
-    let dragActivated = false;
-
-    listElement.addEventListener("touchstart", function (e) {
+    let pressTimer;
+    listElement.addEventListener("touchstart", (e) => {
       if (e.target.tagName === "BUTTON") return;
-      longPressTimer = setTimeout(() => {
-        sortable.option("disabled", false);
-        dragActivated = true;
-      }, 300);
+      pressTimer = setTimeout(() => sortable.option("disabled", false), 300);
     });
-
-    listElement.addEventListener("touchend", function () {
-      clearTimeout(longPressTimer);
-      if (dragActivated) {
-        setTimeout(() => {
-          sortable.option("disabled", true);
-          dragActivated = false;
-        }, 1000);
-      }
+    listElement.addEventListener("touchend", () => {
+      clearTimeout(pressTimer);
+      setTimeout(() => sortable.option("disabled", true), 1000);
     });
 
     listRef.orderByChild("order").on("value", (snapshot) => {
       listElement.innerHTML = "";
-      snapshot.forEach((childSnapshot) => {
-        const key = childSnapshot.key;
-        const data = childSnapshot.val();
-
+      snapshot.forEach((child) => {
+        const key = child.key;
+        const data = child.val();
         const li = document.createElement("li");
-        li.setAttribute("data-id", key);
+        li.dataset.id = key;
         li.className = "list-item";
 
         const content = document.createElement("span");
-        content.textContent = data.text;
         content.className = "item-text";
+        content.textContent = data.text;
         if (data.checked) content.classList.add("checked");
 
         const buttonGroup = document.createElement("div");
@@ -105,11 +102,8 @@
         deleteBtn.className = "delete";
         deleteBtn.onclick = () => listRef.child(key).remove();
 
-        buttonGroup.appendChild(doneBtn);
-        buttonGroup.appendChild(deleteBtn);
-
-        li.appendChild(content);
-        li.appendChild(buttonGroup);
+        buttonGroup.append(doneBtn, deleteBtn);
+        li.append(content, buttonGroup);
         listElement.appendChild(li);
       });
     });

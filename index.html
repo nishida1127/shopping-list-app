@@ -7,7 +7,6 @@
   <link rel="stylesheet" href="style.css" />
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
   <script src="firebase-config.js"></script>
 </head>
 <body>
@@ -38,83 +37,68 @@
     });
     addButton.addEventListener("click", addItem);
 
-    const sortable = new Sortable(listElement, {
-      animation: 150,
-      disabled: true,
-      ghostClass: "sortable-ghost",
-      chosenClass: "sortable-chosen",
-      onChoose: (evt) => evt.item.classList.add("highlighted-item"),
-      onUnchoose: (evt) => evt.item.classList.remove("highlighted-item"),
-      onEnd: () => {
-        [...listElement.children].forEach((li, index) => {
-          const id = li.dataset.id;
-          listRef.child(id).update({ order: Date.now() + index }); // 新しい順に近づける
-        });
-      }
-    });
-
-    let pressTimer;
-    let longPressTarget;
-
-    listElement.addEventListener("touchstart", (e) => {
-      if (e.target.tagName === "BUTTON") return;
-      longPressTarget = e.target.closest("li");
-      pressTimer = setTimeout(() => {
-        if (longPressTarget) {
-          sortable.option("disabled", false);
-          longPressTarget.classList.add("highlighted-item");
-        }
-      }, 200);
-    });
-
-    listElement.addEventListener("touchend", () => {
-      clearTimeout(pressTimer);
-      setTimeout(() => {
-        sortable.option("disabled", true);
-        document.querySelectorAll(".highlighted-item").forEach(el => el.classList.remove("highlighted-item"));
-      }, 1000);
-    });
-
-    listRef.orderByChild("order").on("value", (snapshot) => {
+    function renderList(snapshot) {
       const items = [];
-      snapshot.forEach((child) => {
-        items.unshift(child); // 最新順に並べる（逆順に追加）
-      });
+      snapshot.forEach(child => items.push({ key: child.key, ...child.val() }));
+      items.sort((a, b) => b.order - a.order); // 新しい順
 
       listElement.innerHTML = "";
-      items.forEach((child) => {
-        const key = child.key;
-        const data = child.val();
+
+      items.forEach((item, index) => {
         const li = document.createElement("li");
-        li.dataset.id = key;
+        li.dataset.id = item.key;
         li.className = "list-item";
 
         const content = document.createElement("span");
         content.className = "item-text";
-        content.textContent = data.text;
-        if (data.checked) content.classList.add("checked");
+        content.textContent = item.text;
+        if (item.checked) content.classList.add("checked");
 
         const buttonGroup = document.createElement("div");
         buttonGroup.className = "button-group";
 
         const doneBtn = document.createElement("button");
-        doneBtn.textContent = data.checked ? "購入済" : "未購入";
-        doneBtn.className = data.checked ? "done purchased" : "done not-purchased";
-        doneBtn.onclick = () => listRef.child(key).update({ checked: !data.checked });
+        doneBtn.textContent = item.checked ? "購入済" : "未購入";
+        doneBtn.className = item.checked ? "done purchased" : "done not-purchased";
+        doneBtn.onclick = () => listRef.child(item.key).update({ checked: !item.checked });
+
+        const upBtn = document.createElement("button");
+        upBtn.textContent = "↑";
+        upBtn.onclick = () => moveItem(index, index - 1);
+
+        const downBtn = document.createElement("button");
+        downBtn.textContent = "↓";
+        downBtn.onclick = () => moveItem(index, index + 1);
 
         const deleteBtn = document.createElement("button");
         deleteBtn.textContent = "削除";
         deleteBtn.className = "delete";
-        deleteBtn.onclick = () => listRef.child(key).remove();
+        deleteBtn.onclick = () => listRef.child(item.key).remove();
 
-        buttonGroup.append(doneBtn, deleteBtn);
+        buttonGroup.append(doneBtn, upBtn, downBtn, deleteBtn);
         li.append(content, buttonGroup);
         listElement.appendChild(li);
       });
+
+      function moveItem(fromIndex, toIndex) {
+        if (toIndex < 0 || toIndex >= items.length) return;
+        const reordered = [...items];
+        const movedItem = reordered.splice(fromIndex, 1)[0];
+        reordered.splice(toIndex, 0, movedItem);
+
+        reordered.forEach((item, i) => {
+          listRef.child(item.key).update({ order: reordered.length - i }); // 上にあるほど大きいorder
+        });
+      }
+    }
+
+    listRef.on("value", (snapshot) => {
+      renderList(snapshot);
     });
   </script>
 </body>
 </html>
+
 
 
 

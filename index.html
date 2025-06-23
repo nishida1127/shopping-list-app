@@ -64,10 +64,12 @@
 
         const upBtn = document.createElement("button");
         upBtn.textContent = "↑";
+        upBtn.className = "move";
         upBtn.onclick = () => moveItem(index, index - 1);
 
         const downBtn = document.createElement("button");
         downBtn.textContent = "↓";
+        downBtn.className = "move";
         downBtn.onclick = () => moveItem(index, index + 1);
 
         const deleteBtn = document.createElement("button");
@@ -87,7 +89,7 @@
         reordered.splice(toIndex, 0, movedItem);
 
         reordered.forEach((item, i) => {
-          listRef.child(item.key).update({ order: reordered.length - i }); // 上にあるほど大きいorder
+          listRef.child(item.key).update({ order: reordered.length - i });
         });
       }
     }
@@ -98,6 +100,7 @@
   </script>
 </body>
 </html>
+
 
 
 

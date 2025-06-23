@@ -8,22 +8,10 @@
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
-  <script>
-    const firebaseConfig = {
-      apiKey: "AIzaSyCd5dXABidFlZqypvwB8ARzOuC0BjDtB0Y",
-      authDomain: "shopping-list-eef81.firebaseapp.com",
-      databaseURL: "https://shopping-list-eef81-default-rtdb.asia-southeast1.firebasedatabase.app",
-      projectId: "shopping-list-eef81",
-      storageBucket: "shopping-list-eef81.appspot.com",
-      messagingSenderId: "527901026853",
-      appId: "1:527901026853:web:8246ce69cac03f9fb6adcc",
-      measurementId: "G-G7L2VQT2N4"
-    };
-    firebase.initializeApp(firebaseConfig);
-  </script>
+  <script src="firebase-config.js"></script>
 </head>
 <body>
-  <h1>📂 family 買い物リスト</h1>
+  <h1>🛒 family 買い物リスト</h1>
   <div class="input-group">
     <input id="itemInput" type="text" placeholder="商品名を入力" />
     <button id="addButton">追加</button>
@@ -110,6 +98,7 @@
   </script>
 </body>
 </html>
+
 
 
 

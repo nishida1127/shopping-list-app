@@ -127,4 +127,23 @@ ul {
   -ms-user-select: none;
 }
 
+/* ドラッグ対象の選択中のアイテム */
+.sortable-chosen {
+  opacity: 0.8;
+  transform: scale(1.01);
+  background-color: #fff2cc;
+}
+
+/* ゴースト表示（ドロップ先） */
+.sortable-ghost {
+  opacity: 0.5;
+  background-color: #e6f7ff;
+  border: 2px dashed #1890ff;
+}
+
+/* ✅ ドラッグ有効時に対象アイテムだけ強調 */
+.highlighted-item {
+  background-color: #fffbe6;
+  box-shadow: 0 0 8px rgba(255, 187, 0, 0.5);
+}
 

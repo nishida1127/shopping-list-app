@@ -48,7 +48,7 @@
       onEnd: () => {
         [...listElement.children].forEach((li, index) => {
           const id = li.dataset.id;
-          listRef.child(id).update({ order: index });
+          listRef.child(id).update({ order: Date.now() + index }); // 新しい順に近づける
         });
       }
     });
@@ -64,7 +64,7 @@
           sortable.option("disabled", false);
           longPressTarget.classList.add("highlighted-item");
         }
-      }, 200); // 長押し感度を改善（200ms）
+      }, 200);
     });
 
     listElement.addEventListener("touchend", () => {
@@ -76,8 +76,13 @@
     });
 
     listRef.orderByChild("order").on("value", (snapshot) => {
-      listElement.innerHTML = "";
+      const items = [];
       snapshot.forEach((child) => {
+        items.unshift(child); // 最新順に並べる（逆順に追加）
+      });
+
+      listElement.innerHTML = "";
+      items.forEach((child) => {
         const key = child.key;
         const data = child.val();
         const li = document.createElement("li");
@@ -110,6 +115,7 @@
   </script>
 </body>
 </html>
+
 
 
 

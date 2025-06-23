@@ -40,25 +40,21 @@
     function renderList(snapshot) {
       const items = [];
       snapshot.forEach(child => items.push({ key: child.key, ...child.val() }));
-      items.sort((a, b) => b.order - a.order); // 新しい順
+      items.sort((a, b) => b.order - a.order);
 
       listElement.innerHTML = "";
 
       items.forEach((item, index) => {
         const li = document.createElement("li");
-        li.dataset.id = item.key;
         li.className = "list-item";
 
-        const topRow = document.createElement("div");
-        topRow.className = "top-row";
+        const text = document.createElement("span");
+        text.className = "item-text";
+        text.textContent = item.text;
+        if (item.checked) text.classList.add("checked");
 
-        const content = document.createElement("span");
-        content.className = "item-text";
-        content.textContent = item.text;
-        if (item.checked) content.classList.add("checked");
-
-        const buttonGroup = document.createElement("div");
-        buttonGroup.className = "button-group";
+        const buttons = document.createElement("div");
+        buttons.className = "button-group";
 
         const doneBtn = document.createElement("button");
         doneBtn.textContent = item.checked ? "購入済" : "未購入";
@@ -80,9 +76,8 @@
         deleteBtn.className = "delete";
         deleteBtn.onclick = () => listRef.child(item.key).remove();
 
-        buttonGroup.append(doneBtn, upBtn, downBtn, deleteBtn);
-        topRow.append(content, buttonGroup);
-        li.append(topRow);
+        buttons.append(doneBtn, upBtn, downBtn, deleteBtn);
+        li.append(text, buttons);
         listElement.appendChild(li);
       });
 
@@ -104,4 +99,5 @@
   </script>
 </body>
 </html>
+
 

@@ -91,7 +91,6 @@ ul {
   color: gray;
 }
 
-/* ドラッグ中のアイテム */
 .highlighted-item {
   background-color: #fffbe6;
   box-shadow: 0 0 8px rgba(255, 187, 0, 0.5);
@@ -109,7 +108,6 @@ ul {
   border: 2px dashed #1890ff;
 }
 
-/* スマホ対応 */
 @media (max-width: 480px) {
   .list-item {
     flex-direction: row;
@@ -121,12 +119,12 @@ ul {
   }
 }
 
-/* テキスト選択を防ぐ（iPhone対応） */
 * {
   user-select: none;
   -webkit-user-select: none;
   -ms-user-select: none;
 }
+
 
 
 

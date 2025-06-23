@@ -33,6 +33,7 @@ button {
   display: flex;
   align-items: center;
   justify-content: center;
+  vertical-align: middle;
 }
 
 button:hover {
@@ -90,60 +91,43 @@ ul {
   color: gray;
 }
 
-/* 👇 並び替えモード中のリストに視覚効果 */
-.drag-mode .list-item {
+/* ✅ 並び替え中の選択アイテムのみ強調表示 */
+.highlighted-item {
   background-color: #fffbe6;
   box-shadow: 0 0 8px rgba(255, 187, 0, 0.5);
 }
 
-/* ドラッグ対象の選択中のアイテム */
+/* ✅ ドラッグ選択中のスタイル */
 .sortable-chosen {
   opacity: 0.8;
   transform: scale(1.01);
   background-color: #fff2cc;
 }
 
-/* ゴースト表示（ドロップ先） */
+/* ✅ ドロップ先のゴーストスタイル */
 .sortable-ghost {
   opacity: 0.5;
   background-color: #e6f7ff;
   border: 2px dashed #1890ff;
 }
 
-/* スマホ対応 */
+/* ✅ スマホ対応調整 */
 @media (max-width: 480px) {
   .list-item {
-    flex-wrap: nowrap;
+    flex-direction: row;
+    align-items: flex-start;
   }
+
   .button-group {
-    margin-top: 0;
+    flex-shrink: 0;
   }
 }
 
-/* テキスト選択を防止 */
+/* ✅ すべての要素でテキスト選択を防ぐ（特にiOS対策） */
 * {
   user-select: none;
   -webkit-user-select: none;
   -ms-user-select: none;
 }
 
-/* ドラッグ対象の選択中のアイテム */
-.sortable-chosen {
-  opacity: 0.8;
-  transform: scale(1.01);
-  background-color: #fff2cc;
-}
-
-/* ゴースト表示（ドロップ先） */
-.sortable-ghost {
-  opacity: 0.5;
-  background-color: #e6f7ff;
-  border: 2px dashed #1890ff;
-}
-
-/* ✅ ドラッグ有効時に対象アイテムだけ強調 */
-.highlighted-item {
-  background-color: #fffbe6;
-  box-shadow: 0 0 8px rgba(255, 187, 0, 0.5);
-}
 

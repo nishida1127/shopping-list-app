@@ -28,63 +28,57 @@
       const value = input.value.trim();
       if (!value) return;
       const newItemRef = listRef.push();
-      newItemRef.set({
-        text: value,
-        checked: false,
-        order: Date.now()
-      });
+      newItemRef.set({ text: value, checked: false, order: Date.now() });
       input.value = "";
     }
 
     document.getElementById("itemInput").addEventListener("keypress", function (e) {
-      if (e.key === "Enter") {
-        addItem();
-      }
+      if (e.key === "Enter") addItem();
     });
 
-    // Sortable.js 設定
     const sortable = new Sortable(listElement, {
       animation: 150,
       disabled: true,
       ghostClass: "sortable-ghost",
       chosenClass: "sortable-chosen",
+      onChoose: function (evt) {
+        evt.item.classList.add("highlighted-item");
+      },
+      onUnchoose: function (evt) {
+        evt.item.classList.remove("highlighted-item");
+      },
       onEnd: function () {
         const items = listElement.querySelectorAll("li");
         items.forEach((li, index) => {
           const id = li.getAttribute("data-id");
           listRef.child(id).update({ order: index });
         });
-      },
-      // 選択された要素にスタイル追加
-      onChoose: function (evt) {
-        evt.item.classList.add("highlighted-item");
-      },
-      onUnchoose: function (evt) {
-        evt.item.classList.remove("highlighted-item");
       }
     });
 
-    // 長押しでドラッグモード有効化（ボタンを除外）
     let longPressTimer = null;
+    let dragActivated = false;
 
     listElement.addEventListener("touchstart", function (e) {
       if (e.target.tagName === "BUTTON") return;
       longPressTimer = setTimeout(() => {
         sortable.option("disabled", false);
-      }, 300); // 長押し感知時間
+        dragActivated = true;
+      }, 300);
     });
 
     listElement.addEventListener("touchend", function () {
       clearTimeout(longPressTimer);
-      setTimeout(() => {
-        sortable.option("disabled", true);
-      }, 1000); // 並び替え後に無効化
+      if (dragActivated) {
+        setTimeout(() => {
+          sortable.option("disabled", true);
+          dragActivated = false;
+        }, 1000);
+      }
     });
 
-    // データ取得して表示
     listRef.orderByChild("order").on("value", (snapshot) => {
       listElement.innerHTML = "";
-
       snapshot.forEach((childSnapshot) => {
         const key = childSnapshot.key;
         const data = childSnapshot.val();
@@ -104,9 +98,7 @@
         const doneBtn = document.createElement("button");
         doneBtn.textContent = data.checked ? "購入済" : "未購入";
         doneBtn.className = data.checked ? "done purchased" : "done not-purchased";
-        doneBtn.onclick = () => {
-          listRef.child(key).update({ checked: !data.checked });
-        };
+        doneBtn.onclick = () => listRef.child(key).update({ checked: !data.checked });
 
         const deleteBtn = document.createElement("button");
         deleteBtn.textContent = "削除";
@@ -124,4 +116,5 @@
   </script>
 </body>
 </html>
+
 

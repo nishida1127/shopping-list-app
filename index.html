@@ -54,13 +54,25 @@
     });
 
     let pressTimer;
+    let longPressTarget;
+
     listElement.addEventListener("touchstart", (e) => {
       if (e.target.tagName === "BUTTON") return;
-      pressTimer = setTimeout(() => sortable.option("disabled", false), 300);
+      longPressTarget = e.target.closest("li");
+      pressTimer = setTimeout(() => {
+        if (longPressTarget) {
+          sortable.option("disabled", false);
+          longPressTarget.classList.add("highlighted-item");
+        }
+      }, 200); // 長押し感度を改善（200ms）
     });
+
     listElement.addEventListener("touchend", () => {
       clearTimeout(pressTimer);
-      setTimeout(() => sortable.option("disabled", true), 1000);
+      setTimeout(() => {
+        sortable.option("disabled", true);
+        document.querySelectorAll(".highlighted-item").forEach(el => el.classList.remove("highlighted-item"));
+      }, 1000);
     });
 
     listRef.orderByChild("order").on("value", (snapshot) => {
@@ -98,6 +110,7 @@
   </script>
 </body>
 </html>
+
 
 
 

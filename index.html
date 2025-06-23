@@ -49,6 +49,9 @@
         li.dataset.id = item.key;
         li.className = "list-item";
 
+        const topRow = document.createElement("div");
+        topRow.className = "top-row";
+
         const content = document.createElement("span");
         content.className = "item-text";
         content.textContent = item.text;
@@ -78,7 +81,8 @@
         deleteBtn.onclick = () => listRef.child(item.key).remove();
 
         buttonGroup.append(doneBtn, upBtn, downBtn, deleteBtn);
-        li.append(content, buttonGroup);
+        topRow.append(content, buttonGroup);
+        li.append(topRow);
         listElement.appendChild(li);
       });
 
@@ -100,3 +104,4 @@
   </script>
 </body>
 </html>
+

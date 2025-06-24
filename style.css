@@ -1,4 +1,3 @@
-/* 全体設定 */
 body {
   font-family: sans-serif;
   padding: 20px;
@@ -11,7 +10,6 @@ h1 {
   text-align: center;
 }
 
-/* 入力欄 */
 .input-group {
   display: flex;
   gap: 10px;
@@ -36,14 +34,12 @@ h1 {
   cursor: pointer;
 }
 
-/* リスト全体 */
 ul {
   list-style: none;
   padding: 0;
   margin: 0;
 }
 
-/* リスト項目 */
 .list-item {
   display: flex;
   flex-direction: row;
@@ -56,13 +52,15 @@ ul {
   background-color: white;
   box-sizing: border-box;
   min-height: 60px;
-  overflow-x: auto; /* 🔸横スクロール許可 */
   gap: 10px;
+
+  /* ここがポイント！ */
+  flex-wrap: nowrap;        /* 改行しない */
+  overflow-x: auto;         /* はみ出たら横スクロール */
 }
 
-/* 商品名 */
 .item-text {
-  flex: 1;
+  flex: 1 1 auto;           /* 伸縮自在 */
   font-size: 18px;
   word-break: break-word;
   display: flex;
@@ -70,21 +68,19 @@ ul {
   min-height: 36px;
 }
 
-/* チェック済み表示 */
 .item-text.checked {
   text-decoration: line-through;
   color: #999;
 }
 
-/* ボタン群 */
 .button-group {
   display: flex;
-  flex-wrap: nowrap; /* 🔸改行させない */
+  flex-wrap: nowrap;       /* ボタン群も改行しない */
   gap: 6px;
   align-items: center;
+  flex-shrink: 0;          /* サイズを縮めない */
 }
 
-/* ボタン共通 */
 button {
   padding: 6px 10px;
   font-size: 14px;
@@ -95,37 +91,34 @@ button {
   align-items: center;
   justify-content: center;
   line-height: 1;
-  white-space: nowrap;
+  white-space: nowrap;     /* テキスト折り返さない */
   cursor: pointer;
+  flex-shrink: 0;          /* ボタンの幅を保つ */
 }
 
-/* ボタン色分け */
 .done.not-purchased {
   background-color: #e0e0e0;
   color: #333;
 }
+
 .done.purchased {
   background-color: #ffe0b2;
   color: #444;
 }
+
 .delete {
   background-color: #ffcdd2;
   color: #b71c1c;
 }
+
 .move {
   background-color: #e0e0e0;
   color: #333;
 }
 
-/* スマホ表示調整（念のため） */
+/* 以下は補足。スマホもPCも同じレイアウト */
 @media (max-width: 480px) {
-  .list-item {
-    flex-wrap: nowrap;
-    overflow-x: auto;
-  }
-
-  .button-group {
-    flex-wrap: nowrap;
-  }
+  /* 必要に応じてここに追加調整可能 */
 }
+
 

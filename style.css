@@ -1,17 +1,17 @@
-/* 全体のスタイル */
+/* 全体設定 */
 body {
   font-family: sans-serif;
   padding: 20px;
   max-width: 600px;
   margin: auto;
-  background-color: #fdfdfd;
+  background-color: #f9f9f9;
 }
 
 h1 {
   text-align: center;
 }
 
-/* 入力欄とボタン */
+/* 入力グループ */
 .input-group {
   display: flex;
   gap: 10px;
@@ -36,15 +36,17 @@ h1 {
   cursor: pointer;
 }
 
+/* 商品リスト */
 ul {
   list-style: none;
   padding: 0;
   margin: 0;
 }
 
-/* 商品リストの項目 */
+/* リスト項目全体 */
 .list-item {
   display: flex;
+  flex-direction: row;
   justify-content: space-between;
   align-items: center;
   padding: 12px 10px;
@@ -54,7 +56,7 @@ ul {
   background-color: white;
   min-height: 50px;
   box-sizing: border-box;
-  flex-wrap: wrap;
+  overflow: hidden;
 }
 
 /* 商品名テキスト */
@@ -64,16 +66,18 @@ ul {
   word-break: break-word;
   display: flex;
   align-items: center;
+  height: 100%;
   min-height: 36px;
+  line-height: 1.2;
 }
 
-/* 購入済み表示 */
+/* チェック済みのスタイル */
 .item-text.checked {
   text-decoration: line-through;
   color: #999;
 }
 
-/* ボタンエリア */
+/* ボタングループ */
 .button-group {
   display: flex;
   gap: 6px;
@@ -81,7 +85,7 @@ ul {
   align-items: center;
 }
 
-/* 共通ボタンスタイル */
+/* ボタン全体共通 */
 button {
   padding: 6px 10px;
   font-size: 14px;
@@ -96,43 +100,49 @@ button {
   cursor: pointer;
 }
 
-/* 未購入・購入済み */
+/* 各種ボタンカラー */
 .done.not-purchased {
   background-color: #e0e0e0;
   color: #333;
 }
+
 .done.purchased {
   background-color: #ffe0b2;
   color: #444;
 }
 
-/* 削除ボタン */
 .delete {
   background-color: #ffcdd2;
   color: #b71c1c;
 }
 
-/* 並び替えボタン */
 .move {
   background-color: #e0e0e0;
   color: #333;
 }
 
-/* スマホ表示対応 */
+/* スマホ対応 */
 @media (max-width: 480px) {
   .list-item {
     flex-direction: column;
     align-items: flex-start;
   }
 
-  .button-group {
-    margin-top: 10px;
-    flex-wrap: wrap;
-  }
-
   .item-text {
     width: 100%;
-    margin-bottom: 6px;
+    margin-bottom: 8px;
+  }
+
+  .button-group {
+    width: 100%;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .button-group button {
+    flex: 1;
+    min-width: 70px;
   }
 }
+
 

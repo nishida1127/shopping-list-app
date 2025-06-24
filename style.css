@@ -1,14 +1,17 @@
+/* 全体のスタイル */
 body {
   font-family: sans-serif;
   padding: 20px;
   max-width: 600px;
   margin: auto;
+  background-color: #fdfdfd;
 }
 
 h1 {
   text-align: center;
 }
 
+/* 入力欄とボタン */
 .input-group {
   display: flex;
   gap: 10px;
@@ -19,11 +22,18 @@ h1 {
   flex: 1;
   padding: 10px;
   font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
 }
 
 .input-group button {
   padding: 10px 15px;
   font-size: 16px;
+  border: none;
+  border-radius: 6px;
+  background-color: #4caf50;
+  color: white;
+  cursor: pointer;
 }
 
 ul {
@@ -32,35 +42,46 @@ ul {
   margin: 0;
 }
 
+/* 商品リストの項目 */
 .list-item {
   display: flex;
-  flex-direction: row;
   justify-content: space-between;
   align-items: center;
   padding: 12px 10px;
   margin-bottom: 10px;
-  border: 1px solid #ccc;
+  border: 1px solid #ddd;
   border-radius: 8px;
-  background-color: #fff;
+  background-color: white;
+  min-height: 50px;
+  box-sizing: border-box;
+  flex-wrap: wrap;
 }
 
+/* 商品名テキスト */
 .item-text {
   flex: 1;
   font-size: 18px;
   word-break: break-word;
+  display: flex;
+  align-items: center;
+  min-height: 36px;
 }
 
+/* 購入済み表示 */
 .item-text.checked {
   text-decoration: line-through;
   color: #999;
 }
 
+/* ボタンエリア */
 .button-group {
   display: flex;
-  gap: 5px;
+  gap: 6px;
   flex-shrink: 0;
+  align-items: center;
 }
 
+/* 共通ボタンスタイル */
 button {
   padding: 6px 10px;
   font-size: 14px;
@@ -70,28 +91,34 @@ button {
   display: flex;
   align-items: center;
   justify-content: center;
+  line-height: 1;
+  white-space: nowrap;
+  cursor: pointer;
 }
 
+/* 未購入・購入済み */
 .done.not-purchased {
-  background-color: #f0f0f0;
+  background-color: #e0e0e0;
   color: #333;
 }
-
 .done.purchased {
   background-color: #ffe0b2;
   color: #444;
 }
 
+/* 削除ボタン */
 .delete {
   background-color: #ffcdd2;
   color: #b71c1c;
 }
 
+/* 並び替えボタン */
 .move {
   background-color: #e0e0e0;
   color: #333;
 }
 
+/* スマホ表示対応 */
 @media (max-width: 480px) {
   .list-item {
     flex-direction: column;
@@ -99,19 +126,13 @@ button {
   }
 
   .button-group {
-    margin-top: 8px;
+    margin-top: 10px;
     flex-wrap: wrap;
   }
+
+  .item-text {
+    width: 100%;
+    margin-bottom: 6px;
+  }
 }
-
-
-
-
-
-
-
-
-
-
-
 

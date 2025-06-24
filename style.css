@@ -49,26 +49,25 @@ ul {
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  flex-wrap: wrap; /* 🔴 追加 */
   padding: 12px 10px;
   margin-bottom: 10px;
   border: 1px solid #ddd;
   border-radius: 8px;
   background-color: white;
   box-sizing: border-box;
-  min-height: 60px; /* 高さ確保 */
-  overflow: visible; /* 🔴 修正 */
+  min-height: 60px;
+  overflow-x: auto; /* 🔸横スクロール許可 */
+  gap: 10px;
 }
 
 /* 商品名 */
 .item-text {
-  flex: 1 1 100%;
+  flex: 1;
   font-size: 18px;
   word-break: break-word;
   display: flex;
   align-items: center;
   min-height: 36px;
-  margin-bottom: 6px;
 }
 
 /* チェック済み表示 */
@@ -80,10 +79,9 @@ ul {
 /* ボタン群 */
 .button-group {
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: nowrap; /* 🔸改行させない */
   gap: 6px;
   align-items: center;
-  width: 100%;
 }
 
 /* ボタン共通 */
@@ -119,23 +117,18 @@ button {
   color: #333;
 }
 
-/* スマホ最適化 */
-@media (min-width: 481px) {
-  .item-text {
-    flex: 1;
-    margin-bottom: 0;
+/* スマホ表示調整（念のため） */
+@media (max-width: 480px) {
+  .list-item {
+    flex-wrap: nowrap;
+    overflow-x: auto;
   }
 
   .button-group {
-    width: auto;
     flex-wrap: nowrap;
-  }
-
-  .list-item {
-    flex-wrap: nowrap;
-    flex-direction: row;
   }
 }
+
 
 
 

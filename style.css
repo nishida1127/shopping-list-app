@@ -11,7 +11,7 @@ h1 {
   text-align: center;
 }
 
-/* 入力グループ */
+/* 入力欄 */
 .input-group {
   display: flex;
   gap: 10px;
@@ -36,56 +36,57 @@ h1 {
   cursor: pointer;
 }
 
-/* 商品リスト */
+/* リスト全体 */
 ul {
   list-style: none;
   padding: 0;
   margin: 0;
 }
 
-/* リスト項目全体 */
+/* リスト項目 */
 .list-item {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
+  flex-wrap: wrap; /* 🔴 追加 */
   padding: 12px 10px;
   margin-bottom: 10px;
   border: 1px solid #ddd;
   border-radius: 8px;
   background-color: white;
-  min-height: 50px;
   box-sizing: border-box;
-  overflow: hidden;
+  min-height: 60px; /* 高さ確保 */
+  overflow: visible; /* 🔴 修正 */
 }
 
-/* 商品名テキスト */
+/* 商品名 */
 .item-text {
-  flex: 1;
+  flex: 1 1 100%;
   font-size: 18px;
   word-break: break-word;
   display: flex;
   align-items: center;
-  height: 100%;
   min-height: 36px;
-  line-height: 1.2;
+  margin-bottom: 6px;
 }
 
-/* チェック済みのスタイル */
+/* チェック済み表示 */
 .item-text.checked {
   text-decoration: line-through;
   color: #999;
 }
 
-/* ボタングループ */
+/* ボタン群 */
 .button-group {
   display: flex;
+  flex-wrap: wrap;
   gap: 6px;
-  flex-shrink: 0;
   align-items: center;
+  width: 100%;
 }
 
-/* ボタン全体共通 */
+/* ボタン共通 */
 button {
   padding: 6px 10px;
   font-size: 14px;
@@ -100,49 +101,41 @@ button {
   cursor: pointer;
 }
 
-/* 各種ボタンカラー */
+/* ボタン色分け */
 .done.not-purchased {
   background-color: #e0e0e0;
   color: #333;
 }
-
 .done.purchased {
   background-color: #ffe0b2;
   color: #444;
 }
-
 .delete {
   background-color: #ffcdd2;
   color: #b71c1c;
 }
-
 .move {
   background-color: #e0e0e0;
   color: #333;
 }
 
-/* スマホ対応 */
-@media (max-width: 480px) {
-  .list-item {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-
+/* スマホ最適化 */
+@media (min-width: 481px) {
   .item-text {
-    width: 100%;
-    margin-bottom: 8px;
+    flex: 1;
+    margin-bottom: 0;
   }
 
   .button-group {
-    width: 100%;
-    flex-wrap: wrap;
-    gap: 6px;
+    width: auto;
+    flex-wrap: nowrap;
   }
 
-  .button-group button {
-    flex: 1;
-    min-width: 70px;
+  .list-item {
+    flex-wrap: nowrap;
+    flex-direction: row;
   }
 }
+
 
 

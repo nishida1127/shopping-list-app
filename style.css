@@ -6,8 +6,10 @@ body {
   background-color: #f9f9f9;
 }
 
+/* タイトルのフォントサイズを2pt下げる（元は20px → 18pxに変更） */
 h1 {
   text-align: center;
+  font-size: 18px;
 }
 
 .input-group {
@@ -54,13 +56,12 @@ ul {
   min-height: 60px;
   gap: 10px;
 
-  /* ここがポイント！ */
-  flex-wrap: nowrap;        /* 改行しない */
-  overflow-x: auto;         /* はみ出たら横スクロール */
+  flex-wrap: nowrap;
+  overflow-x: auto;
 }
 
 .item-text {
-  flex: 1 1 auto;           /* 伸縮自在 */
+  flex: 1 1 auto;
   font-size: 18px;
   word-break: break-word;
   display: flex;
@@ -75,10 +76,10 @@ ul {
 
 .button-group {
   display: flex;
-  flex-wrap: nowrap;       /* ボタン群も改行しない */
+  flex-wrap: nowrap;
   gap: 6px;
   align-items: center;
-  flex-shrink: 0;          /* サイズを縮めない */
+  flex-shrink: 0;
 }
 
 button {
@@ -91,9 +92,9 @@ button {
   align-items: center;
   justify-content: center;
   line-height: 1;
-  white-space: nowrap;     /* テキスト折り返さない */
+  white-space: nowrap;
   cursor: pointer;
-  flex-shrink: 0;          /* ボタンの幅を保つ */
+  flex-shrink: 0;
 }
 
 .done.not-purchased {
@@ -116,9 +117,9 @@ button {
   color: #333;
 }
 
-/* 以下は補足。スマホもPCも同じレイアウト */
 @media (max-width: 480px) {
-  /* 必要に応じてここに追加調整可能 */
+  /* そのまま横並び、横スクロール対応 */
 }
+
 
 

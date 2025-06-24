@@ -6,10 +6,10 @@ body {
   background-color: #f9f9f9;
 }
 
-/* タイトルのフォントサイズを2pt下げる（元は20px → 16pxに変更） */
+/* タイトルのフォントサイズを2pt下げる（元は20px → 18pxに変更） */
 h1 {
   text-align: center;
-  font-size: 16px;
+  font-size: 18px;
 }
 
 .input-group {

@@ -2,30 +2,19 @@ body {
   font-family: sans-serif;
   padding: 20px;
   margin: 0;
-  background: linear-gradient(135deg, #f0f4f8, #d9eaf7); /* おしゃれな淡いグラデーション */
+  background: linear-gradient(135deg, #f0f4f8, #d9eaf7); /* シンプルでおしゃれな背景 */
   min-height: 100vh;
-  display: flex;
-  justify-content: center;
-}
-
-/* メインカード風のエリア */
-main {
-  width: 100%;
   max-width: 600px;
-  background-color: #ffffff;
-  padding: 30px 20px;
-  border-radius: 12px;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+  margin-left: auto;
+  margin-right: auto;
 }
 
-/* タイトル */
 h1 {
   text-align: center;
   font-size: 18px;
   margin-top: 0;
 }
 
-/* 入力エリア */
 .input-group {
   display: flex;
   gap: 10px;
@@ -69,6 +58,7 @@ ul {
   box-sizing: border-box;
   min-height: 60px;
   gap: 10px;
+
   flex-wrap: nowrap;
   overflow-x: auto;
 }
@@ -131,9 +121,6 @@ button {
 }
 
 @media (max-width: 480px) {
-  /* スマホでも同様のレイアウトで横スクロール対応 */
+  /* 横スクロールで対応するため特別な変更不要 */
 }
-
-
-
 

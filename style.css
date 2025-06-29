@@ -2,7 +2,7 @@ body {
   font-family: sans-serif;
   padding: 20px;
   margin: 0;
-  background: linear-gradient(135deg, #f0f4f8, #d9eaf7); /* シンプルでおしゃれな背景 */
+  background: linear-gradient(135deg, #f0f4f8, #d9eaf7);
   min-height: 100vh;
   max-width: 600px;
   margin-left: auto;
@@ -50,13 +50,12 @@ ul {
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  padding: 12px 10px;
-  margin-bottom: 10px;
+  padding: 8px 10px; /* 高さを少し狭く */
+  margin-bottom: 8px;
   border: 1px solid #ddd;
   border-radius: 8px;
   background-color: white;
   box-sizing: border-box;
-  min-height: 60px;
   gap: 10px;
 
   flex-wrap: nowrap;
@@ -69,7 +68,7 @@ ul {
   word-break: break-word;
   display: flex;
   align-items: center;
-  min-height: 36px;
+  min-height: 30px; /* 少し低く */
 }
 
 .item-text.checked {
@@ -86,11 +85,11 @@ ul {
 }
 
 button {
-  padding: 6px 10px;
+  padding: 6px 8px;
   font-size: 14px;
   border: none;
   border-radius: 5px;
-  height: 36px;
+  height: 30px; /* 少し低く */
   display: flex;
   align-items: center;
   justify-content: center;
@@ -121,6 +120,5 @@ button {
 }
 
 @media (max-width: 480px) {
-  /* 横スクロールで対応するため特別な変更不要 */
+  /* スマホも横スクロール対応なので変更不要 */
 }
-
